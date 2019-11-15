@@ -39,4 +39,4 @@ for i in os.listdir('textlocalize/validation/Input/'):
     # old
     # cv2.imwrite('Answer/'+str(i),cv2.resize(segmented, imshow_size)) 
     # new
-    cv2.imwrite('Answer/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
+    cv2.imwrite('answer/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
