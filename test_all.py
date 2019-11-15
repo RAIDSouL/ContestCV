@@ -16,13 +16,13 @@ def iou(y_true, y_pred):
     union = K.sum(K.sum(K.squeeze(K.clip(y_true + y_pred, 0, 1), axis=3), axis=2), axis=1)
     return K.mean((inter + K.epsilon()) / (union + K.epsilon()))
 
-model = load_model('Models/my_model_epoch300.h5',custom_objects={'iou':iou})
+model = load_model('Models/256/my_model_epoch75.h5',custom_objects={'iou':iou})
 
 for i in os.listdir('textlocalize/validation/Input/'):
     test_im = cv2.imread('textlocalize/validation/Input/'+str(i))
     true_size = test_im.shape
-    # imshow_size = (512,round(true_size[0]*512/true_size[1]))
-    # cv2.imshow('Input',cv2.resize(test_im, imshow_size))
+    imshow_size = (512,round(true_size[0]*512/true_size[1]))
+    cv2.imshow('Input',cv2.resize(test_im, imshow_size))
     # cv2.waitKey(50)
 
     test_im = cv2.cvtColor(test_im, cv2.COLOR_BGR2RGB)
@@ -32,10 +32,11 @@ for i in os.listdir('textlocalize/validation/Input/'):
     segmented = model.predict(test_im)
     #segmented = np.around(segmented)
     segmented = (segmented[0, :, :, 0]*255).astype('uint8')
-    # cv2.imshow('Output',cv2.resize(segmented, imshow_size))
-    # cv2.waitKey()
+
+    cv2.imshow('Output',cv2.resize(segmented, imshow_size))
+    cv2.waitKey()
 
     # old
     # cv2.imwrite('Answer/'+str(i),cv2.resize(segmented, imshow_size)) 
     # new
-    # cv2.imwrite('Answer/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
+    cv2.imwrite('Answer/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
