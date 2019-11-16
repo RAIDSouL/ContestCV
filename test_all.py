@@ -16,7 +16,7 @@ def iou(y_true, y_pred):
     union = K.sum(K.sum(K.squeeze(K.clip(y_true + y_pred, 0, 1), axis=3), axis=2), axis=1)
     return K.mean((inter + K.epsilon()) / (union + K.epsilon()))
 
-model = load_model('Models/256/my_model_epoch75.h5',custom_objects={'iou':iou})
+model = load_model('Models/256/my_model_epoch100.h5',custom_objects={'iou':iou})
 
 for i in os.listdir('textlocalize/validation/Input/'):
     test_im = cv2.imread('textlocalize/validation/Input/'+str(i))
@@ -39,4 +39,4 @@ for i in os.listdir('textlocalize/validation/Input/'):
     # old
     # cv2.imwrite('Answer/'+str(i),cv2.resize(segmented, imshow_size)) 
     # new
-    cv2.imwrite('answer/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
+    cv2.imwrite('Output/'+str(i),cv2.resize(segmented,(true_size[1],true_size[0])))
